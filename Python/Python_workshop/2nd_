@@ -1,0 +1,192 @@
+"""
+오타맨 창영
+문자열과 오타열 지우기
+"""
+import sys
+
+# data = int(input())
+# for i in range(data):
+#     idx, word = input().split()
+#     idx = int(idx) - 1
+#
+#     new_word = word[:idx] + word[idx:]
+#     print(new_word)
+#
+#     word = list(word)
+#     word.pop(idx)
+#     print("".join)
+
+"""
+ox 문제 풀기
+"""
+# print("input the int number")
+# data = int(input())
+#
+# def OX_Question():
+#     for _ in range(data):
+#         results = input()
+#
+#         score = answer = 0
+#
+#         for result in results:
+#             if result == "O":
+#                 score += 1
+#                 answer += score
+#
+#             elif result == "X":
+#                 score = 0
+#
+#     return score
+
+"""
+일곱 난쟁이
+"""
+#1. 모듈 사용하기
+"""
+import sys
+from itertools import combinations
+input = sys.stdin.readline
+
+nan_jengs = [int(input()) for _ in range(9)]
+
+for this_case in combinations(nan_jengs, 7):
+    if sum(this_case) == 100:
+        for nan_jeng in sorted(this_case):
+        print(nan_jeng)
+
+        break
+"""
+# import random
+#
+# #nan_jengs = [int(input()) for _ in range(9)]
+# test = [20,7,23,19,10,15,25,8,13]
+# sum_test = sum(test)
+# for i in range(8):
+#     for j in range(i+1, 9):
+#         sec_nums = test[i],test[j]
+#         lst = sum(test) - sum(sec_nums)
+#
+#         if lst == 100:
+#             print(sec_nums)
+#             break
+
+#선생님 ver
+
+# import sys
+# from itertools import combinations
+# input = sys.stdin.readline
+#
+# dwarfs = [int(input()) for _ in range(9)]
+# sum_gwarfs = sum(dwarfs)
+#
+# spy = []
+# for i in range(8):
+#     for j in range(i+1, 9):
+#         if sum_dwarfs - dwarfs[i] - dwarfs[j] == 100:
+#         dwarfs.pop(i)
+#         dwarfs.pop(j-1)
+#         break
+
+# for dwarf in sorted(dwarfs):
+#     print(dwarf)
+
+"""
+## 2중 for문에서 잘 종료하기
+break는 바로 직전에 반복문 1개만 종료시킴
+for문에 종료하기는 힘듦
+
+1. flag #깃발
+
+flag = False
+for i in range(8):
+    for j in range(i+1, 9):
+        if sum_dwarfs - dwarfs[i] - dwarfs[j] == 100:
+        dwarfs.pop(i)
+        dwarfs.pop(j-1)
+        flag = True
+        break
+    if flag:
+    break
+
+2. exit()
+: 실행 종료
+for i in range(8):
+    for j in range(i+1, 9):
+        if sum_dwarfs - dwarfs[i] - dwarfs[j] == 100:
+        dwarfs.pop(i)
+        dwarfs.pop(j-1)
+        exit(0)
+for ~~
+exit는 exit뒤로 오는 코드들 모두 종료시킴.
+실행해야 하는 코드는 exit 전에 있어야 함
+
+
+3. 함수처리
+def find_spy():
+    for i in range(8):
+        for j in range(i+1, 9):
+            if sum_dwarfs - dwarfs[i] - dwarfs[j] == 100:
+            dwarfs.pop(i)
+            dwarfs.pop(j-1)
+            return 
+
+find_spy()
+for dwarf in sorted(dwarfs):
+    print(dwarf)
+    
+설명 : return을 만나면 이후에 코드들이 종료됨
+대신 함수는 호출이 필요
+"""
+
+# 수 찾기
+# 방법 1
+# import sys
+# input = sys.stdin.readline
+# # M : 합했을 때 나오길 원하는 값
+#
+# N, M = map(int, input().split())
+# nums = list(map(int, input().split()))
+#
+# ans = 0
+#
+# for i in range(N):
+#     for j in range(i, N):
+#         if sum(nums[i:j+1]) == M:
+#             ans += 1
+#
+# print(ans)
+
+
+## 제일 효과적인 알고리즘 : 투포인터 알고리즘
+## 오른쪽으로만 이동
+import sys
+input = sys.stdin.readline
+# M : 합했을 때 나오길 원하는 값
+
+N, M = map(int, input().split())
+nums = list(map(int, input().split()))
+
+## 1. 포인터 변수 초기화
+s = e = 0
+tmp = ans = 0
+
+# 2. 반복문 생성
+#tmp : 가지고 다닐 리스트, s : 리스트 내 start값, M: 타겟값
+
+while True:
+    # 3.  종료 조건 설정 : tmp < M , e == N
+    if tmp < M:
+        if e == M:
+            break
+        tmp += nums[e]
+        e += 1
+
+    elif tmp > M:
+        tmp -= nums[s]
+        s += 1
+    else:
+        ans += 1
+        tmp -= nums[s]
+        s += 1
+
+print(ans)
